@@ -76,7 +76,7 @@ function handle(name, contents, rules) {
     // Template template template!
     const template = rules.template
     out.push(template
-      .replace(/\$\(([^)]+)\)/, function(_, dataName) {
+      .replace(/\$\(([^)]+)\)/g, function(_, dataName) {
         return data[dataName]
       }))
   }
