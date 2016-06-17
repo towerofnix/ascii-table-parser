@@ -87,6 +87,14 @@ function handle(name, contents, rules) {
           let end
           if (isNumber(l.begin)) {
             begin = l.begin - 1
+          } else {
+            const re = new RegExp(l.begin)
+            for (let i = 0; i < lines.length; i++) {
+              if (re.test(lines[i])) {
+                begin = i
+                break
+              }
+            }
           }
           if (isNumber(l.end)) {
             end = l.end - 1
