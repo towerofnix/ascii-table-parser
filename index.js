@@ -9,6 +9,10 @@
 const fsp = require('fs-promise')
 const yaml = require('js-yaml')
 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n)
+}
+
 fsp.readdir('tables')
   .then(names => (
     names
@@ -70,16 +74,38 @@ function handle(name, contents, rules) {
         } else {
           match = matches['group' in dataMatcher ? dataMatcher.group : 0]
         }
-        console.log('TEST:', testString)
+        // console.log('TEST:', testString)
         // console.log('REGEX:', re)
-        console.log('MATCH:', match)
+        // console.log('MATCH:', match)
         return match
       }
 
       if ('lines' in dataMatcher) {
         const l = dataMatcher.lines
         if ('begin' in l && 'end' in l) {
-          const testStrings = lines.slice(l.begin - 1, l.end)
+          let begin
+          let end
+          if (isNumber(l.begin)) {
+            begin = l.begin - 1
+          }
+          if (isNumber(l.end)) {
+            end = l.end - 1
+          } else {
+            const re = new RegExp(l.end)
+            let i
+            if (dataMatcher.lines.startCanBeEnd) {
+              i = begin
+            } else {
+              i = begin + 1
+            }
+            for (; i < lines.length; i++) {
+              if (re.test(lines[i])) {
+                end = i
+                break
+              }
+            }
+          }
+          const testStrings = lines.slice(begin, end)
           const results = testStrings.map(handleOneLine)
           const join = ('join' in dataMatcher) ? dataMatcher.join : ' '
           data[dataName] = results.join(join)
@@ -95,8 +121,8 @@ function handle(name, contents, rules) {
       }
     }
 
-    console.log('----')
-    console.log('DATA:', data)
+    // console.log('----')
+    // console.log('DATA:', data)
 
     // Template template template!
     const template = rules.template
