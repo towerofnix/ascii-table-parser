@@ -58,20 +58,45 @@ function handle(name, contents, rules) {
     const data = {}
     for (const dataName in rules.getData) {
       const dataMatcher = rules.getData[dataName]
-      const testString = ('line' in dataMatcher)
-        ? table.split('\n')[dataMatcher.line - 1]
-        : table
-      const re = new RegExp(dataMatcher.regex)
-      const matches = testString.match(re)
-      let match
-      if (matches === null) {
-        // handle null
-        match = '((Failed to match anything))'
-      } else {
-        match = matches['group' in dataMatcher ? dataMatcher.group : 0]
+      const lines = table.split('\n')
+
+      const handleOneLine = testString => {
+        const re = new RegExp(dataMatcher.regex)
+        const matches = testString.match(re)
+        let match
+        if (matches === null) {
+          // handle null
+          match = '((Failed to match anything))'
+        } else {
+          match = matches['group' in dataMatcher ? dataMatcher.group : 0]
+        }
+        console.log('TEST:', testString)
+        // console.log('REGEX:', re)
+        console.log('MATCH:', match)
+        return match
       }
-      data[dataName] = match
+
+      if ('lines' in dataMatcher) {
+        const l = dataMatcher.lines
+        if ('begin' in l && 'end' in l) {
+          const testStrings = lines.slice(l.begin - 1, l.end)
+          const results = testStrings.map(handleOneLine)
+          const join = ('join' in dataMatcher) ? dataMatcher.join : ' '
+          data[dataName] = results.join(join)
+        }
+      } else {
+        let testString
+        if ('line' in dataMatcher) {
+          testString = lines[dataMatcher.line - 1]
+        } else {
+          testString = lines
+        }
+        data[dataName] = handleOneLine(testString)
+      }
     }
+
+    console.log('----')
+    console.log('DATA:', data)
 
     // Template template template!
     const template = rules.template
