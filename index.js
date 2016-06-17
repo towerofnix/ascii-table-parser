@@ -119,7 +119,7 @@ function handle(name, contents, rules) {
           }
           const testStrings = lines.slice(begin, end + 1)
           const results = testStrings.map(handleOneLine)
-          const join = ('join' in dataMatcher) ? dataMatcher.join : ' '
+          const join = ('join' in l) ? l.join : ' '
           data[dataName] = results.join(join)
         }
       } else {
