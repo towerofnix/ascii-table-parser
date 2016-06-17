@@ -101,7 +101,7 @@ function handle(name, contents, rules) {
           } else {
             const re = new RegExp(l.end)
             let i
-            if (dataMatcher.lines.startCanBeEnd) {
+            if (l.startCanBeEnd) {
               i = begin
             } else {
               i = begin + 1
@@ -113,7 +113,11 @@ function handle(name, contents, rules) {
               }
             }
           }
-          const testStrings = lines.slice(begin, end)
+          if ('inclusive' in l && l.inclusive === false) {
+            begin += 1
+            end -= 1
+          }
+          const testStrings = lines.slice(begin, end + 1)
           const results = testStrings.map(handleOneLine)
           const join = ('join' in dataMatcher) ? dataMatcher.join : ' '
           data[dataName] = results.join(join)
