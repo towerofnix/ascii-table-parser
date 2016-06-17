@@ -10,9 +10,14 @@ module.exports = function handle(contents, rules) {
   for (let table of tables) {
     // Extract data
     const data = {}
+    let previousLineEnd = 0
     for (const dataName in rules.getData) {
       const dataMatcher = rules.getData[dataName]
       const lines = table.split('\n')
+
+      // console.log('')
+      // console.log(dataName + '----------------')
+      // console.log(dataMatcher)
 
       const handleOneLine = testString => {
         const re = new RegExp(dataMatcher.regex)
@@ -24,6 +29,7 @@ module.exports = function handle(contents, rules) {
         } else {
           match = matches['group' in dataMatcher ? dataMatcher.group : 0]
         }
+        // console.log('PREVLINE:', previousLineEnd)
         // console.log('TEST:', testString)
         // console.log('REGEX:', re)
         // console.log('MATCH:', match)
@@ -63,6 +69,11 @@ module.exports = function handle(contents, rules) {
               }
             }
           }
+          if (dataMatcher.lineRelativeToPrevious) {
+            begin += previousLineEnd
+            end += previousLineEnd
+          }
+          previousLineEnd = end + 1
           if ('inclusive' in l && l.inclusive === false) {
             begin += 1
             end -= 1
@@ -73,13 +84,19 @@ module.exports = function handle(contents, rules) {
           data[dataName] = results.join(join)
         }
       } else {
-        let testString
+        let testString, lineNum
         if ('line' in dataMatcher) {
-          testString = lines[dataMatcher.line - 1]
+          lineNum = dataMatcher.line - 1
+          if (dataMatcher.lineRelativeToPrevious) {
+            lineNum += previousLineEnd + 1
+          }
+          testString = lines[lineNum]
         } else {
+          lineNum = 0
           testString = lines
         }
         data[dataName] = handleOneLine(testString)
+        previousLineEnd = lineNum
       }
     }
 
