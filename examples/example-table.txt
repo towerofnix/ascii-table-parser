@@ -1,0 +1,12 @@
+  /----- Hello world! -----\
+  | This is just an        |
+  | example. I'm working   |
+  | on it :)               |
+  +------------------------+
+  \--     CODE:  42      --/
+
+  /----- INTERMISSION -----\
+  | Quick reminder that    |
+  | the codes are fake!    |
+  +------------------------+
+  \--     CODE: 123      --/

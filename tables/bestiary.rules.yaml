@@ -1,0 +1,188 @@
+tableSplit: "\n\n"
+getData:
+  id:
+    line: 2
+    regex: '#([\w]+)'
+    group: 1
+  name:
+    line: 2
+    regex: 'Name: ([\w]+)'
+    group: 1
+  exp:
+    line: 4
+    regex: 'EXP: ([0-9]+)'
+    group: 1
+  gold:
+    line: 4
+    regex: 'Gold: ([0-9]+)'
+    group: 1
+  family:
+    line: 4
+    regex: 'Family: ([\w]+)'
+    group: 1
+  hp:
+    line: 6
+    regex: 'HP: ([0-9]+)'
+    group: 1
+  mp:
+    line: 6
+    regex: 'MP: ([0-9]+)'
+    group: 1
+  atk:
+    line: 6
+    regex: 'ATK: ([0-9]+)'
+    group: 1
+  def:
+    line: 6
+    regex: 'DEF: ([0-9]+)'
+    group: 1
+  agi:
+    line: 6
+    regex: 'AGI: ([0-9]+)'
+    group: 1
+  # Lines 8-9 are tough.. line 8 is the labels and line 9 is the values.
+  # Basically all I change in the regex is the contents of the {n,n} at the
+  # very end of the regex, which is the index of the cell to get content from.
+  # (this also applies for the similar rows below)
+  fire:
+    line: 9
+    regex: '(\|\s+([0-9]+)\s+){1,1}'
+    group: 2
+  ice:
+    line: 9
+    regex: '(\|\s+([0-9]+)\s+){2,2}'
+    group: 2
+  wind:
+    line: 9
+    regex: '(\|\s+([0-9]+)\s+){3,3}'
+    group: 2
+  blast:
+    line: 9
+    regex: '(\|\s+([0-9]+)\s+){4,4}'
+    group: 2
+  earth:
+    line: 9
+    regex: '(\|\s+([0-9]+)\s+){5,5}'
+    group: 2
+  dark:
+    line: 9
+    regex: '(\|\s+([0-9]+)\s+){6,6}'
+    group: 2
+  light:
+    line: 9
+    regex: '(\|\s+([0-9]+)\s+){7,7}'
+    group: 2
+  dazle:
+    line: 12
+    regex: '(\|\s+([0-9]+)\s+){1,1}'
+    group: 2
+  sleep:
+    line: 12
+    regex: '(\|\s+([0-9]+)\s+){2,2}'
+    group: 2
+  death:
+    line: 12
+    regex: '(\|\s+([0-9]+)\s+){3,3}'
+    group: 2
+  drnmp:
+    line: 12
+    regex: '(\|\s+([0-9]+)\s+){4,4}'
+    group: 2
+  confu:
+    line: 12
+    regex: '(\|\s+([0-9]+)\s+){5,5}'
+    group: 2
+  fizle:
+    line: 12
+    regex: '(\|\s+([0-9]+)\s+){6,6}'
+    group: 2
+  stop:
+    line: 12
+    regex: '(\|\s+([0-9]+)\s+){7,7}'
+    group: 2
+  poisn:
+    line: 15
+    regex: '(\|\s+([0-9]+)\s+){1,1}'
+    group: 2
+  prlyz:
+    line: 15
+    regex: '(\|\s+([0-9]+)\s+){2,2}'
+    group: 2
+  decAK:
+    line: 15
+    regex: '(\|\s+([0-9]+)\s+){3,3}'
+    group: 2
+  decDF:
+    line: 15
+    regex: '(\|\s+([0-9]+)\s+){4,4}'
+    group: 2
+  decSP:
+    line: 15
+    regex: '(\|\s+([0-9]+)\s+){5,5}'
+    group: 2
+  decMR:
+    line: 15
+    regex: '(\|\s+([0-9]+)\s+){6,6}'
+    group: 2
+  msmrz:
+    line: 15
+    regex: '(\|\s+([0-9]+)\s+){7,7}'
+    group: 2
+  description:
+    lines:
+      begin: 16
+      end: '\|-+\|'
+      join: ' '
+      inclusive: false
+    regex: '\|\s(.+?(?=\s+\|))'
+    group: 1
+  # -----
+
+template: |
+  <table>
+    <tr>
+      <td>#$(id)</td>
+      <td>Name: $(name)</td>
+    </tr>
+    <tr>
+      <td>EXP: $(exp)</td>
+      <td>Gold: $(gold)</td>
+      <td>Family: $(family)</td>
+    </tr>
+    <tr>
+      <td>HP: $(hp)</td>
+      <td>MP: $(mp)</td>
+      <td>ATK: $(atk)</td>
+      <td>DEF: $(def)</td>
+      <td>AGI: $(agi)</td>
+    </tr>
+    <tr>
+      <td>Fire: $(fire)</td>
+      <td>Ice: $(ice)</td>
+      <td>Wind: $(wind)</td>
+      <td>Blast: $(blast)</td>
+      <td>Earth: $(earth)</td>
+      <td>Dark: $(dark)</td>
+      <td>Light: $(light)</td>
+    </tr>
+    <tr>
+      <td>Dazzle: $(dazle)</td>
+      <td>Sleep: $(sleep)</td>
+      <td>Death: $(death)</td>
+      <td>Drain MP: $(drnmp)</td>
+      <td>Confuse: $(confu)</td>
+      <td>Fizzle: $(fizle)</td>
+      <td>Stop Action: $(stop)</td>
+    </tr>
+    <tr>
+      <td>Poison: $(poisn)</td>
+      <td>Paralyze: $(paralyze)</td>
+      <td>Lower Attack: $(decAK)</td>
+      <td>Lower Defense: $(decDF)</td>
+      <td>Lower Agility: $(decSP)</td>
+      <td>Lower Magic Resistence: $(decMR)</td>
+      <td>Mesmerize: $(msmrz)</td>
+    </tr>
+    <tr>
+      <td>$(description)</td>
+  </table>

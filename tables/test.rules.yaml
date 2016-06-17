@@ -1,0 +1,11 @@
+tableSplit: "\n\n"
+getData:
+  demo:
+    lines:
+      begin: 'Pigs!'
+      end: 'No pigs\.'
+      join: '\n'
+      inclusive: false
+    regex: '^.*$'
+template: |
+  Value: $(demo)

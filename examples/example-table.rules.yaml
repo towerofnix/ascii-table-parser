@@ -1,0 +1,13 @@
+tableSplit: "\n\n"
+getData:
+  caption:
+    line: 1
+    regex: '-+\s+(.*)\s+-+'
+    group: 1
+  code:
+    line: -1 # lol, examples not finished yet. This doesn't work :D
+    regex: 'CODE:\s+([0-9]+)\s+'
+    group: 1
+template: |
+  CAPTION: $(caption)
+  CODE: $(code)

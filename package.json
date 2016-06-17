@@ -2,5 +2,31 @@
   "dependencies": {
     "fs-promise": "^0.5.0",
     "js-yaml": "^3.6.1"
-  }
+  },
+  "name": "ascii-table-parser",
+  "version": "1.0.0",
+  "description": "Parse ASCII tables (and template them into something new, like HTML tables!)",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liam4/ascii-table-parser.git"
+  },
+  "keywords": [
+    "ascii",
+    "tables",
+    "html",
+    "parse",
+    "generate",
+    "template"
+  ],
+  "author": "liam4",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/liam4/ascii-table-parser/issues"
+  },
+  "homepage": "https://github.com/liam4/ascii-table-parser#readme"
 }
